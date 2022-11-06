@@ -16,9 +16,7 @@ PostgreSQL
 
 Rest API
 
-Abstract
-
-### Intro
+### Abstract
 
 A customer has a number of warehouses. They wish to track the movement of stock in and out of each warehouse. A warehouse has a particular size, this represents the maximum stock amount allowed in this warehouse. Each warehouse is stocked with products. Products have a size per unit amount. Products can be imported, or exported from a warehouse at which point the product, amount and date are recorded. The customer has hazardous and non-hazardous products. It is very important that hazardous products are not kept in the same warehouse as non-hazardous products. Imports can be in the future or the past. The customer will want to see what the current stock level is in a warehouse and what stock space is remaining.
 
