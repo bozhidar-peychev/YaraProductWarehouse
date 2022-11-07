@@ -1,12 +1,12 @@
-import { getAllAuthorsResolver } from "./getAllAuthorsQuery";
-import { getAllBooksQueryResolver } from "./getAllBooksQuery";
+import { getAllProductsQueryResolver } from "./getAllProductsQuery";
+import { getAllWarehousesQueryResolver } from "./getAllWarehousesQuery";
 
 const query = {
-  books: {
-    resolve: getAllBooksQueryResolver,
+  products: {
+    resolve: getAllProductsQueryResolver,
   },
-  authors: {
-    resolve: getAllAuthorsResolver,
+  warehouses: {
+    resolve: getAllWarehousesQueryResolver,
   },
 };
 

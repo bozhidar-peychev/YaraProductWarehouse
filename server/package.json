@@ -24,7 +24,7 @@
     "compile": "npm run generate && tsc"
   },
   "keywords": [],
-  "author": "",
+  "author": "Bobby",
   "license": "ISC",
   "description": "",
   "devDependencies": {

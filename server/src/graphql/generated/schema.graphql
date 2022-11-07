@@ -1,57 +1,113 @@
 type Query {
-  """Get all books query"""
-  books: [Book]
+  """
+  Get all warehouses query
+  """
+  warehouses: [Warehouse]
 
-  """Get all authors query"""
-  authors: [Author]
+  """
+  Get all products query
+  """
+  product: [Product]
 }
 
-"""A book"""
-type Book {
-  """id of the book"""
-  bookId: ID!
+"""
+A warehouse
+"""
+type Warehouse {
+  """
+  id of the warehouse
+  """
+  warehouseId: ID!
 
-  """title of book"""
-  title: String
+  """
+  max stock level of the warehouse
+  """
+  maxStockLevel: Int!
 
-  """author of book"""
-  author: Author
+  """
+  current stock level of the warehouse
+  """
+  currentStockLevel: Int
 
-  """id of the author"""
-  authorId: Int
+  """
+  is the warehouse hazardous
+  """
+  hazardous: Int!
+
+  """
+  list of products in the warehouse
+  """
+  products: [Product]
 }
 
-"""A author"""
-type Author {
-  """id of the author"""
-  authorId: ID!
+"""
+A product
+"""
+type Product {
+  """
+  id of the product
+  """
+  ProductId: ID!
 
-  """authors username"""
-  username: String
+  """
+  warehouse of the product
+  """
+  warehouse: Warehouse
 
-  """list of authors books"""
-  books: [Book]
+  """
+  id of the warehouse
+  """
+  warehouseId: Int
+
+  """
+  is the product hazardous
+  """
+  hazardous: Boolean!
+
+  """
+  timestamp of the import/export
+  """
+  date: Int
+
+  """
+  amount of products for import/export
+  """
+  amount: Int
 }
 
 type Mutation {
-  """Create book"""
-  createBook(input: CreateBookInput): Book
+  """
+  create warehouse
+  """
+  createWarehouse(input: CreateWarehouseInput): Warehouse
 
-  """create author"""
-  createAuthor(input: CreateAuthorInput): Author
+  """
+  create product
+  """
+  createProduct(input: CreateProductInput): Product
 }
 
-"""Create book input"""
-input CreateBookInput {
-  """The books title."""
-  title: String!
+"""
+Create Warehouse input
+"""
+input CreateWarehouseInput {
+  """
+  stock level of the warehouse
+  """
+  maxStockLevel: Int!
 
-  """The authors id."""
-  authorId: Int!
+  """
+  is the warehouse hazardous
+  """
+  hazardous: Boolean!
 }
 
-"""Create author input"""
-input CreateAuthorInput {
-  """The authors username"""
-  username: String!
+"""
+Create Product input
+"""
+input CreateProductInput {
+  """
+  is the product hazardous
+  """
+  hazardous: Boolean!
 }

@@ -1,13 +1,13 @@
 import { GraphQLObjectType } from 'graphql';
 
-import createAuthorMutation from '../resolvers/mutation/createAuthorMutation';
-import createBookMutation from '../resolvers/mutation/createBookMutation';
+import createProductMutation from '../resolvers/mutation/createProductMutation';
+import createWarehouseMutation from '../resolvers/mutation/createWarehouseMutation';
 
 const mutationType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    createBook: createBookMutation,
-    createAuthor: createAuthorMutation,
+    createProduct: createProductMutation,
+    createWarehouse: createWarehouseMutation,
   },
 });
 

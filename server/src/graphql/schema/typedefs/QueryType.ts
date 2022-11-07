@@ -1,13 +1,13 @@
 import { GraphQLObjectType } from 'graphql';
 
-import getAllAuthorsQuery from '../resolvers/query/getAllAuthorsQuery';
-import getAllBooksQuery from '../resolvers/query/getAllBooksQuery';
+import getAllProductsQuery from '../resolvers/query/getAllProductsQuery';
+import getAllWarehousesQuery from '../resolvers/query/getAllWarehousesQuery';
 
 const queryType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Query',
   fields: {
-    books: getAllBooksQuery,
-    authors: getAllAuthorsQuery,
+    products: getAllProductsQuery,
+    warehouses: getAllWarehousesQuery,
   },
 });
 
