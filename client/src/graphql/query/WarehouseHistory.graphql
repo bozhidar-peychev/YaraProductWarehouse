@@ -1,0 +1,19 @@
+query WarehouseHistoryImported($input: WarehouseHistoryInput) {
+  warehouseHistoryImported(input: $input) {
+    id
+    warehouseId
+    dateImport
+    dateExport
+    amount
+  }
+}
+
+query WarehouseHistoryExported($input: WarehouseHistoryInput) {
+  warehouseHistoryExported(input: $input) {
+    id
+    warehouseId
+    dateImport
+    dateExport
+    amount
+  }
+}

@@ -1,6 +1,9 @@
-query GetAllAuthors {
-  authors {
-    authorId
-    username
+query Products {
+  products {
+    productId
+    productName
+    warehouseId
+    hazardous
+    amount
   }
 }

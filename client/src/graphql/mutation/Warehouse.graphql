@@ -1,10 +1,17 @@
-query GetAllBooks {
-  books {
-    bookId
-    title
-    author {
-      authorId
-      username
-    }
+mutation CreateWarehouse($input: CreateWarehouseInput) {
+  createWarehouse(input: $input) {
+    id
+    maxStockLevel
+    currentStockLevel
+    hazardous
+  }
+}
+
+mutation AddWarehouseProducts($input: AddWarehouseProductsInput) {
+  addWarehouseProducts(input: $input) {
+    id
+    maxStockLevel
+    currentStockLevel
+    hazardous
   }
 }

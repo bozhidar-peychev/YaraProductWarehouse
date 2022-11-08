@@ -1,23 +1,29 @@
-import { useGetAllBooksQuery } from './generated/graphql';
+import { useProductsQuery } from './graphql/generated/graphql';
 
 function DisplayData() {
-  const { data, loading } = useGetAllBooksQuery();
+  const { data, loading } = useProductsQuery();
 
   if (loading) {
     return <h1> DATA IS LOADING...</h1>;
   }
 
+  if (!data?.products || data.products.length === 0) return <h1> NO DATA</h1>;
+
   return (
     <div>
       {data &&
-        data.books?.map((book, index) => {
-          console.log({ book });
+        data.products &&
+        data.products.map((product, index) => {
+          console.log({ product });
 
           return (
-            <div key={index}>
-              <h1>Title: {book?.title}</h1>
-              <h1>Author: {book?.author?.username}</h1>
-            </div>
+            product && (
+              <div key={product?.productId}>
+                {Object.entries(product).map((key, i) => (
+                  <h1>{`${key}: ${Object.values(product)[i]}`}</h1>
+                ))}
+              </div>
+            )
           );
         })}
     </div>

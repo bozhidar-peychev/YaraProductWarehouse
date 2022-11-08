@@ -1,10 +1,15 @@
-query GetAllBooks {
-  books {
-    bookId
-    title
-    author {
-      authorId
-      username
+query Warehouses {
+  warehouses {
+    id
+    maxStockLevel
+    currentStockLevel
+    hazardous
+    products {
+      productId
+      productName
+      warehouseId
+      hazardous
+      amount
     }
   }
 }

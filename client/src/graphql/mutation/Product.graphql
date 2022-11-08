@@ -1,6 +1,9 @@
-mutation CreateAuthor($input: CreateAuthorInput) {
-  createAuthor(input: $input) {
-    authorId
-    username
+mutation CreateProduct($input: CreateProductInput) {
+  createProduct(input: $input) {
+    productId
+    productName
+    warehouseId
+    hazardous
+    amount
   }
 }
