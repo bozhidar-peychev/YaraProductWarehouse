@@ -1,13 +1,17 @@
-import { createAuthorMutationResolver } from "./createAuthorMutation";
-import { createBookMutationResolver } from "./createBookMutation";
+import { addWarehouseProductsMutationResolver } from './addWarehouseProductsMutation';
+import { createProductMutationResolver } from "./createProductMutation";
+import { createWarehouseMutationResolver } from "./createWarehouseMutation";
 
 const mutation = {
-  createBook: {
-    resolve: createBookMutationResolver,
+  createWarehouse: {
+    resolve: createWarehouseMutationResolver,
   },
-  createAuthor: {
-    resolve: createAuthorMutationResolver,
+  createProduct: {
+    resolve: createProductMutationResolver,
   },
+  addWarehouseProducts: {
+    resolve: addWarehouseProductsMutationResolver
+  }
 };
 
 export default mutation;

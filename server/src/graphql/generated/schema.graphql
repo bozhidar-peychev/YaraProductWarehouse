@@ -1,57 +1,141 @@
 type Query {
-  """Get all books query"""
-  books: [Book]
+  """Get all warehouses query"""
+  warehouses: [Warehouse]
 
-  """Get all authors query"""
-  authors: [Author]
+  """Get all products query"""
+  products: [Product]
+
+  """Get specific imported warehouse history"""
+  warehouseHistoryImported(input: WarehouseHistoryInput): [WarehouseHistoryType]
+
+  """Get specific exported warehouse history"""
+  warehouseHistoryExported(input: WarehouseHistoryInput): [WarehouseHistoryType]
 }
 
-"""A book"""
-type Book {
-  """id of the book"""
-  bookId: ID!
+"""A warehouse"""
+type Warehouse {
+  """The warehouse id"""
+  id: Int!
 
-  """title of book"""
-  title: String
+  """The warehouse's max stock level"""
+  maxStockLevel: Int
 
-  """author of book"""
-  author: Author
+  """The warehouse's current stock level"""
+  currentStockLevel: Int
 
-  """id of the author"""
-  authorId: Int
+  """Is the warehouse hazardous"""
+  hazardous: Boolean
+
+  """The products in the warehouse"""
+  products: [Product]
+
+  """The warehouse history"""
+  warehouseHistory: [WarehouseHistoryType]
 }
 
-"""A author"""
-type Author {
-  """id of the author"""
-  authorId: ID!
+"""A product"""
+type Product {
+  """id of the product"""
+  productId: Int!
 
-  """authors username"""
-  username: String
+  """The product Name"""
+  productName: String
 
-  """list of authors books"""
-  books: [Book]
+  """the warehouse of the product"""
+  warehouse: Warehouse
+
+  """the id of the warehouse for the product"""
+  warehouseId: Int
+
+  """is the product hazardous"""
+  hazardous: Boolean
+
+  """the amount for the last import/export that was made"""
+  amount: Int
+}
+
+"""Warehouse history"""
+type WarehouseHistoryType {
+  """The warehouse history id"""
+  id: Int!
+
+  """The conected warehouse id"""
+  warehouseId: Int
+
+  """The conected warehouse"""
+  warehouse: Warehouse
+
+  """The import date"""
+  dateImport: Int
+
+  """The export date"""
+  dateExport: Int
+
+  """The imported/exported amount"""
+  amount: Int
+}
+
+"""Warehouse History imort/export Input"""
+input WarehouseHistoryInput {
+  """the id of the warehouse"""
+  warehouseId: Int!
 }
 
 type Mutation {
-  """Create book"""
-  createBook(input: CreateBookInput): Book
+  """Create warehouse"""
+  createWarehouse(input: CreateWarehouseInput): Warehouse
 
-  """create author"""
-  createAuthor(input: CreateAuthorInput): Author
+  """create product"""
+  createProduct(input: CreateProductInput): Product
+
+  """add warehouse products"""
+  addWarehouseProducts(input: AddWarehouseProductsInput): Warehouse
 }
 
-"""Create book input"""
-input CreateBookInput {
-  """The books title."""
-  title: String!
+"""Create warehouse input"""
+input CreateWarehouseInput {
+  """The warehouse's max stock level"""
+  maxStockLevel: Int!
 
-  """The authors id."""
-  authorId: Int!
+  """Is the warehouse hazardous"""
+  hazardous: Boolean!
+
+  """new products"""
+  products: [ProductInput]
 }
 
-"""Create author input"""
-input CreateAuthorInput {
-  """The authors username"""
-  username: String!
+"""product input"""
+input ProductInput {
+  """id of the product"""
+  productId: Int!
+
+  """The product Name"""
+  productName: String
+
+  """the id of the warehouse for the product"""
+  warehouseId: Int
+
+  """is the product hazardous"""
+  hazardous: Boolean
+
+  """the amount for the last import/export that was made"""
+  amount: Int
+}
+
+"""Create product input"""
+input CreateProductInput {
+  """The products hazardous status"""
+  hazardous: Boolean!
+
+  """The product Name"""
+  productName: String!
+}
+
+"""Add Warehouse Products Input"""
+input AddWarehouseProductsInput {
+  """new products"""
+  products: [ProductInput]!
+
+  """id"""
+  id: Int!
 }

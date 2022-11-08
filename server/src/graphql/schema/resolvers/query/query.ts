@@ -1,13 +1,21 @@
-import { getAllAuthorsResolver } from "./getAllAuthorsQuery";
-import { getAllBooksQueryResolver } from "./getAllBooksQuery";
+import { getAllProductsResolver } from "./getAllProductsQuery";
+import { getAllWarehousesQueryResolver } from "./getAllWarehousesQuery";
+import { getWarehouseHistoryExportedByWarehouseIdResolver } from './getWarehouseHistoryExportedByWarehouseIdQuery';
+import { getWarehouseHistoryImportedByWarehouseIdResolver } from './getWarehouseHistoryImportedByWarehouseIdQuery';
 
 const query = {
-  books: {
-    resolve: getAllBooksQueryResolver,
+  warehouses: {
+    resolve: getAllWarehousesQueryResolver,
   },
-  authors: {
-    resolve: getAllAuthorsResolver,
+  products: {
+    resolve: getAllProductsResolver,
   },
+  warehouseHistoryImported: {
+    resolve: getWarehouseHistoryImportedByWarehouseIdResolver
+  },
+  warehouseHistoryExported: {
+    resolve: getWarehouseHistoryExportedByWarehouseIdResolver
+  }
 };
 
 export default query;

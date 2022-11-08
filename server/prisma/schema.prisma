@@ -10,15 +10,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Book {
-  bookId   Int    @id @default(autoincrement())
-  title    String
-  author   Author @relation(fields: [authorId], references: [authorId])
-  authorId Int
+model Warehouse {
+  id                Int                @id @default(autoincrement())
+  maxStockLevel     Int?               @default(0)
+  currentStockLevel Int?               @default(0)
+  hazardous         Boolean?
+  products          Product[]          @relation("Warehouse products")
+  warehouseHistory  WarehouseHistory[] @relation("Warehouse history")
 }
 
-model Author {
-  authorId Int    @id @default(autoincrement())
-  username String
-  books    Book[]
+model Product {
+  productId   Int        @id @default(autoincrement())
+  warehouseId Int?
+  warehouse   Warehouse? @relation("Warehouse products", fields: [warehouseId], references: [id])
+  productName String?
+  hazardous   Boolean?
+  amount      Int?
+}
+
+model WarehouseHistory {
+  id          Int        @id @default(autoincrement())
+  warehouseId Int?
+  warehouse   Warehouse? @relation("Warehouse history", fields: [warehouseId], references: [id])
+  dateImport  Int?
+  dateExport  Int?
+  amount      Int?
 }
