@@ -1,7 +1,7 @@
 import {
   GraphQLInputObjectType,
-  GraphQLInt,
   GraphQLNonNull,
+  GraphQLString,
 } from 'graphql';
 
 const WarehouseHistoryInput: GraphQLInputObjectType = new GraphQLInputObjectType({
@@ -9,7 +9,7 @@ const WarehouseHistoryInput: GraphQLInputObjectType = new GraphQLInputObjectType
   description: 'Warehouse History imort/export Input',
   fields: {
     warehouseId: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: 'the id of the warehouse',
     },
   },

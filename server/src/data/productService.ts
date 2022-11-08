@@ -9,7 +9,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
   return products;
 };
 
-export const getProductByProductId = async (productId: number): Promise<ProductInput | null> => {
+export const getProductByProductId = async (productId): Promise<ProductInput | null> => {
   return prismaContext.prisma.product.findFirst({
     where: {
       productId,

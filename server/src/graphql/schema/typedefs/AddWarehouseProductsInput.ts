@@ -1,8 +1,8 @@
 import {
   GraphQLInputObjectType,
-  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
+  GraphQLString,
 } from 'graphql';
 
 import ProductInput from './ProductInput';
@@ -16,7 +16,7 @@ const AddWarehouseProductsInput: GraphQLInputObjectType = new GraphQLInputObject
       description: "new products",
     },
     id: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: 'id',
     },
   },

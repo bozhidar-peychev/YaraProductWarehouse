@@ -2,6 +2,7 @@ import {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLString,
 } from 'graphql';
 
 import WarehouseType from './WarehouseType';
@@ -11,11 +12,11 @@ const WarehouseHistoryType: GraphQLObjectType = new GraphQLObjectType({
   description: 'Warehouse history',
   fields: () => ({
     id: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: "The warehouse history id",
     },
     warehouseId: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: "The conected warehouse id",
     },
     warehouse: {

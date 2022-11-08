@@ -4,6 +4,7 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLString,
 } from 'graphql';
 
 import ProductType from './ProductType';
@@ -14,7 +15,7 @@ const WarehouseType: GraphQLObjectType = new GraphQLObjectType({
   description: 'A warehouse',
   fields: () => ({
     id: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: "The warehouse id",
     },
     maxStockLevel: {

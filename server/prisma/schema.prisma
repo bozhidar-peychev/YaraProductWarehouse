@@ -11,7 +11,7 @@ generator client {
 }
 
 model Warehouse {
-  id                Int                @id @default(autoincrement())
+  id                String             @id @default(uuid())
   maxStockLevel     Int?               @default(0)
   currentStockLevel Int?               @default(0)
   hazardous         Boolean?
@@ -20,8 +20,8 @@ model Warehouse {
 }
 
 model Product {
-  productId   Int        @id @default(autoincrement())
-  warehouseId Int?
+  productId   String     @id @default(uuid())
+  warehouseId String?
   warehouse   Warehouse? @relation("Warehouse products", fields: [warehouseId], references: [id])
   productName String?
   hazardous   Boolean?
@@ -29,8 +29,8 @@ model Product {
 }
 
 model WarehouseHistory {
-  id          Int        @id @default(autoincrement())
-  warehouseId Int?
+  id          String     @id @default(uuid())
+  warehouseId String?
   warehouse   Warehouse? @relation("Warehouse history", fields: [warehouseId], references: [id])
   dateImport  Int?
   dateExport  Int?

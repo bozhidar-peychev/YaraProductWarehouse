@@ -18,7 +18,7 @@ export type Scalars = {
 /** Add Warehouse Products Input */
 export type AddWarehouseProductsInput = {
   /** id */
-  id: Scalars['Int'];
+  id: Scalars['String'];
   /** new products */
   products: Array<InputMaybe<ProductInput>>;
 };
@@ -74,13 +74,13 @@ export type Product = {
   /** is the product hazardous */
   hazardous?: Maybe<Scalars['Boolean']>;
   /** id of the product */
-  productId: Scalars['Int'];
+  productId: Scalars['String'];
   /** The product Name */
   productName?: Maybe<Scalars['String']>;
   /** the warehouse of the product */
   warehouse?: Maybe<Warehouse>;
   /** the id of the warehouse for the product */
-  warehouseId?: Maybe<Scalars['Int']>;
+  warehouseId?: Maybe<Scalars['String']>;
 };
 
 /** product input */
@@ -90,21 +90,21 @@ export type ProductInput = {
   /** is the product hazardous */
   hazardous?: InputMaybe<Scalars['Boolean']>;
   /** id of the product */
-  productId: Scalars['Int'];
+  productId: Scalars['String'];
   /** The product Name */
   productName?: InputMaybe<Scalars['String']>;
   /** the id of the warehouse for the product */
-  warehouseId?: InputMaybe<Scalars['Int']>;
+  warehouseId?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
   /** Get all products query */
   products?: Maybe<Array<Maybe<Product>>>;
-  /** Warehouse history exported */
-  warehouseHistoryExported?: Maybe<Array<Maybe<WarehouseHistory>>>;
-  /** Warehouse history imported */
-  warehouseHistoryImported?: Maybe<Array<Maybe<WarehouseHistory>>>;
+  /** Get specific exported warehouse history */
+  warehouseHistoryExported?: Maybe<Array<Maybe<WarehouseHistoryType>>>;
+  /** Get specific imported warehouse history */
+  warehouseHistoryImported?: Maybe<Array<Maybe<WarehouseHistoryType>>>;
   /** Get all warehouses query */
   warehouses?: Maybe<Array<Maybe<Warehouse>>>;
 };
@@ -127,36 +127,36 @@ export type Warehouse = {
   /** Is the warehouse hazardous */
   hazardous?: Maybe<Scalars['Boolean']>;
   /** The warehouse id */
-  id: Scalars['Int'];
+  id: Scalars['String'];
   /** The warehouse's max stock level */
   maxStockLevel?: Maybe<Scalars['Int']>;
   /** The products in the warehouse */
   products?: Maybe<Array<Maybe<Product>>>;
   /** The warehouse history */
-  warehouseHistory?: Maybe<Array<Maybe<WarehouseHistory>>>;
-};
-
-/** Warehouse History */
-export type WarehouseHistory = {
-  __typename?: 'WarehouseHistory';
-  /** the imported/exported amount */
-  amount?: Maybe<Scalars['Int']>;
-  /** the export date */
-  dateExport?: Maybe<Scalars['Int']>;
-  /** the import date */
-  dateImport?: Maybe<Scalars['Int']>;
-  /** id of the product */
-  id: Scalars['Int'];
-  /** the warehouse connection */
-  warehouse?: Maybe<Warehouse>;
-  /** The connected warehouse id */
-  warehouseId?: Maybe<Scalars['Int']>;
+  warehouseHistory?: Maybe<Array<Maybe<WarehouseHistoryType>>>;
 };
 
 /** Warehouse History imort/export Input */
 export type WarehouseHistoryInput = {
-  /** the warehouse id */
-  warehouseId: Scalars['Int'];
+  /** the id of the warehouse */
+  warehouseId: Scalars['String'];
+};
+
+/** Warehouse history */
+export type WarehouseHistoryType = {
+  __typename?: 'WarehouseHistoryType';
+  /** The imported/exported amount */
+  amount?: Maybe<Scalars['Int']>;
+  /** The export date */
+  dateExport?: Maybe<Scalars['Int']>;
+  /** The import date */
+  dateImport?: Maybe<Scalars['Int']>;
+  /** The warehouse history id */
+  id: Scalars['String'];
+  /** The conected warehouse */
+  warehouse?: Maybe<Warehouse>;
+  /** The conected warehouse id */
+  warehouseId?: Maybe<Scalars['String']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -230,35 +230,35 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   AddWarehouseProductsInput: AddWarehouseProductsInput;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   CreateProductInput: CreateProductInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   CreateWarehouseInput: CreateWarehouseInput;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Product: ResolverTypeWrapper<Product>;
   ProductInput: ProductInput;
   Query: ResolverTypeWrapper<{}>;
   Warehouse: ResolverTypeWrapper<Warehouse>;
-  WarehouseHistory: ResolverTypeWrapper<WarehouseHistory>;
   WarehouseHistoryInput: WarehouseHistoryInput;
+  WarehouseHistoryType: ResolverTypeWrapper<WarehouseHistoryType>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AddWarehouseProductsInput: AddWarehouseProductsInput;
-  Int: Scalars['Int'];
+  String: Scalars['String'];
   CreateProductInput: CreateProductInput;
   Boolean: Scalars['Boolean'];
-  String: Scalars['String'];
   CreateWarehouseInput: CreateWarehouseInput;
+  Int: Scalars['Int'];
   Mutation: {};
   Product: Product;
   ProductInput: ProductInput;
   Query: {};
   Warehouse: Warehouse;
-  WarehouseHistory: WarehouseHistory;
   WarehouseHistoryInput: WarehouseHistoryInput;
+  WarehouseHistoryType: WarehouseHistoryType;
 }>;
 
 export type MutationResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
@@ -270,37 +270,37 @@ export type MutationResolvers<ContextType = IPrismaContext, ParentType extends R
 export type ProductResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = ResolversObject<{
   amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   hazardous?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  productId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   productName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   warehouse?: Resolver<Maybe<ResolversTypes['Warehouse']>, ParentType, ContextType>;
-  warehouseId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  warehouseId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType>;
-  warehouseHistoryExported?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistory']>>>, ParentType, ContextType, Partial<QueryWarehouseHistoryExportedArgs>>;
-  warehouseHistoryImported?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistory']>>>, ParentType, ContextType, Partial<QueryWarehouseHistoryImportedArgs>>;
+  warehouseHistoryExported?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistoryType']>>>, ParentType, ContextType, Partial<QueryWarehouseHistoryExportedArgs>>;
+  warehouseHistoryImported?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistoryType']>>>, ParentType, ContextType, Partial<QueryWarehouseHistoryImportedArgs>>;
   warehouses?: Resolver<Maybe<Array<Maybe<ResolversTypes['Warehouse']>>>, ParentType, ContextType>;
 }>;
 
 export type WarehouseResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Warehouse'] = ResolversParentTypes['Warehouse']> = ResolversObject<{
   currentStockLevel?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   hazardous?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   maxStockLevel?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   products?: Resolver<Maybe<Array<Maybe<ResolversTypes['Product']>>>, ParentType, ContextType>;
-  warehouseHistory?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistory']>>>, ParentType, ContextType>;
+  warehouseHistory?: Resolver<Maybe<Array<Maybe<ResolversTypes['WarehouseHistoryType']>>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type WarehouseHistoryResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['WarehouseHistory'] = ResolversParentTypes['WarehouseHistory']> = ResolversObject<{
+export type WarehouseHistoryTypeResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['WarehouseHistoryType'] = ResolversParentTypes['WarehouseHistoryType']> = ResolversObject<{
   amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   dateExport?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   dateImport?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   warehouse?: Resolver<Maybe<ResolversTypes['Warehouse']>, ParentType, ContextType>;
-  warehouseId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  warehouseId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -309,6 +309,6 @@ export type Resolvers<ContextType = IPrismaContext> = ResolversObject<{
   Product?: ProductResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Warehouse?: WarehouseResolvers<ContextType>;
-  WarehouseHistory?: WarehouseHistoryResolvers<ContextType>;
+  WarehouseHistoryType?: WarehouseHistoryTypeResolvers<ContextType>;
 }>;
 

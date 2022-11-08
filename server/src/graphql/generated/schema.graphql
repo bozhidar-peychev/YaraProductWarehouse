@@ -15,7 +15,7 @@ type Query {
 """A warehouse"""
 type Warehouse {
   """The warehouse id"""
-  id: Int!
+  id: String!
 
   """The warehouse's max stock level"""
   maxStockLevel: Int
@@ -36,7 +36,7 @@ type Warehouse {
 """A product"""
 type Product {
   """id of the product"""
-  productId: Int!
+  productId: String!
 
   """The product Name"""
   productName: String
@@ -45,7 +45,7 @@ type Product {
   warehouse: Warehouse
 
   """the id of the warehouse for the product"""
-  warehouseId: Int
+  warehouseId: String
 
   """is the product hazardous"""
   hazardous: Boolean
@@ -57,10 +57,10 @@ type Product {
 """Warehouse history"""
 type WarehouseHistoryType {
   """The warehouse history id"""
-  id: Int!
+  id: String!
 
   """The conected warehouse id"""
-  warehouseId: Int
+  warehouseId: String
 
   """The conected warehouse"""
   warehouse: Warehouse
@@ -78,7 +78,7 @@ type WarehouseHistoryType {
 """Warehouse History imort/export Input"""
 input WarehouseHistoryInput {
   """the id of the warehouse"""
-  warehouseId: Int!
+  warehouseId: String!
 }
 
 type Mutation {
@@ -107,13 +107,13 @@ input CreateWarehouseInput {
 """product input"""
 input ProductInput {
   """id of the product"""
-  productId: Int!
+  productId: String!
 
   """The product Name"""
   productName: String
 
   """the id of the warehouse for the product"""
-  warehouseId: Int
+  warehouseId: String
 
   """is the product hazardous"""
   hazardous: Boolean
@@ -137,5 +137,5 @@ input AddWarehouseProductsInput {
   products: [ProductInput]!
 
   """id"""
-  id: Int!
+  id: String!
 }

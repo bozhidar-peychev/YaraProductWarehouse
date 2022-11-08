@@ -4,7 +4,7 @@ documents: './src/**/*.graphql'
 require:
   - ts-node/register
 generates:
-  ./src/generated/graphql.ts:
+  ./src/graphql/generated/graphql.ts:
     plugins:
       - typescript
       - typescript-operations

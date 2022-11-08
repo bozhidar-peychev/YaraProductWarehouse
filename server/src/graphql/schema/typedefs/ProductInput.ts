@@ -5,7 +5,7 @@ const ProductInput: GraphQLInputObjectType = new GraphQLInputObjectType({
   description: 'product input',
   fields: {
     productId: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: 'id of the product',
     },
     productName: {
@@ -13,7 +13,7 @@ const ProductInput: GraphQLInputObjectType = new GraphQLInputObjectType({
       description: 'The product Name',
     },
     warehouseId: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'the id of the warehouse for the product',
     },
     hazardous: {

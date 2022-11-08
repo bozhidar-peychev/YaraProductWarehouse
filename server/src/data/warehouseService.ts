@@ -9,7 +9,7 @@ export const getAllWarehouses = async (): Promise<Warehouse[]> => {
   return warehouses;
 };
 
-export const getWarehouseById = async (id: number): Promise<Warehouse | null> => {
+const getWarehouseById = async (id): Promise<Warehouse | null> => {
   return prismaContext.prisma.warehouse.findFirst({
     where: {
       id,
@@ -29,7 +29,7 @@ export const createWarehouse = async ({maxStockLevel, hazardous, products}): Pro
   return warehouse;
 };
 
-export const addWarehouseProducts = async ({id, products}: {id: number, products: Product[]}): Promise<Warehouse> => {
+export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> => {
 
   const warehouse: any = await getWarehouseById(id)
   

@@ -13,7 +13,7 @@ const ProductType: GraphQLObjectType = new GraphQLObjectType({
   description: 'A product',
   fields: () => ({
     productId: {
-      type: new GraphQLNonNull(GraphQLInt),
+      type: new GraphQLNonNull(GraphQLString),
       description: 'id of the product',
     },
     productName: {
@@ -25,7 +25,7 @@ const ProductType: GraphQLObjectType = new GraphQLObjectType({
       description: 'the warehouse of the product',
     },
     warehouseId: {
-      type: GraphQLInt,
+      type: GraphQLString,
       description: 'the id of the warehouse for the product',
     },
     hazardous: {

@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Warehouse" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "maxStockLevel" INTEGER DEFAULT 0,
     "currentStockLevel" INTEGER DEFAULT 0,
     "hazardous" BOOLEAN,
@@ -10,8 +10,8 @@ CREATE TABLE "Warehouse" (
 
 -- CreateTable
 CREATE TABLE "Product" (
-    "productId" SERIAL NOT NULL,
-    "warehouseId" INTEGER,
+    "productId" TEXT NOT NULL,
+    "warehouseId" TEXT,
     "productName" TEXT,
     "hazardous" BOOLEAN,
     "amount" INTEGER,
@@ -21,8 +21,8 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "WarehouseHistory" (
-    "id" SERIAL NOT NULL,
-    "warehouseId" INTEGER,
+    "id" TEXT NOT NULL,
+    "warehouseId" TEXT,
     "dateImport" INTEGER,
     "dateExport" INTEGER,
     "amount" INTEGER,
