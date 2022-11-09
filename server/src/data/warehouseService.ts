@@ -165,7 +165,7 @@ export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> =
     const amount = await createWarehouseHistoryAmount({ warehouseHistoryId: currentWarehouseHistory?.id, amount: ip?.amount, productId: ip?.productId })
     amountIdArray.push(amount!)
   })
-console.log({indvProducts,currentWarehouseHistory, currentStockLevel, id,amountIdArray });
+
   await prismaContext.prisma.warehouse.update({
     where: { id },
     data: {
