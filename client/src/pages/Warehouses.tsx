@@ -98,9 +98,9 @@ const Warehouses: FC = (): ReactElement | null => {
     },
     expandableRows: true,
     expandableRowsHeader: false,
-    expandableRowsOnClick: true,
+    expandableRowsOnClick: false,
     isRowExpandable: (dataIndex, expandedRows) => {
-      if (!tableData[dataIndex]?.warehouseHistory) return false;
+      if (tableData[dataIndex]?.warehouseHistory.length === 0) return false;
 
       if (
         expandedRows?.data &&
@@ -112,7 +112,7 @@ const Warehouses: FC = (): ReactElement | null => {
 
       return true;
     },
-    renderExpandableRow: (rowData, rowMeta) => {
+    renderExpandableRow: rowData => {
       const colSpan = rowData.length + 1;
 
       return (
@@ -123,14 +123,14 @@ const Warehouses: FC = (): ReactElement | null => {
       );
     },
     setRowProps: row => {
-      const currentPercentage = (100 * row[3]) / row[4];
+      const currentPercentage = (100 * row[4]) / row[5];
 
-      switch (row[3]) {
+      switch (true) {
         case currentPercentage > 50 && currentPercentage < 80:
           return {
             style: { backgroundColor: 'orange' },
           };
-        case currentPercentage >= 100:
+        case currentPercentage > 80 && currentPercentage <= 100:
           return {
             style: { backgroundColor: 'red' },
           };
@@ -157,7 +157,8 @@ const Warehouses: FC = (): ReactElement | null => {
 
   const components = {
     ExpandButton: (props: MUIDataTableExpandButton) => {
-      if (!tableData[props?.dataIndex!]?.warehouseHistory) return null;
+      if (tableData[props?.dataIndex!]?.warehouseHistory.length === 0)
+        return null;
       return <ExpandButton {...props} />;
     },
   };
