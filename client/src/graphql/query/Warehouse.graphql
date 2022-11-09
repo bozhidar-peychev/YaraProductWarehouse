@@ -7,12 +7,15 @@ query Warehouses {
     products {
       productId
       productName
-      warehouseId
-      hazardous
-      amount
     }
     warehouseHistory {
       id
+      amount {
+        id
+        productId
+        warehouseHistoryId
+        amount
+      }
     }
   }
 }

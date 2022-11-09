@@ -23,12 +23,37 @@ export type AddWarehouseProductsInput = {
   products: Array<InputMaybe<ProductInput>>;
 };
 
+/** An amount */
+export type Amount = {
+  __typename?: 'Amount';
+  /** the amount */
+  amount?: Maybe<Scalars['Int']>;
+  /** id of the amount */
+  id: Scalars['String'];
+  /** The product id */
+  productId?: Maybe<Scalars['String']>;
+  /** the warehouse history of the amount */
+  warehouseHistory?: Maybe<WarehouseHistoryType>;
+  /** the id of the warehouse history for the amount */
+  warehouseHistoryId?: Maybe<Scalars['String']>;
+};
+
 /** Create product input */
 export type CreateProductInput = {
   /** The products hazardous status */
   hazardous: Scalars['Boolean'];
   /** The product Name */
   productName: Scalars['String'];
+};
+
+/** Add Warehouse Products Input */
+export type CreateWarehouseHistoryAmountInput = {
+  /** productId */
+  amount: Scalars['Int'];
+  /** productId */
+  productId: Scalars['String'];
+  /** warehouseHistoryId */
+  warehouseHistoryId: Scalars['String'];
 };
 
 /** Create warehouse input */
@@ -49,6 +74,8 @@ export type Mutation = {
   createProduct?: Maybe<Product>;
   /** Create warehouse */
   createWarehouse?: Maybe<Warehouse>;
+  /** create warehouse history amount */
+  createWarehouseHistoryAmount?: Maybe<Warehouse>;
 };
 
 
@@ -64,6 +91,11 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateWarehouseArgs = {
   input?: InputMaybe<CreateWarehouseInput>;
+};
+
+
+export type MutationCreateWarehouseHistoryAmountArgs = {
+  input?: InputMaybe<CreateWarehouseHistoryAmountInput>;
 };
 
 /** A product */
@@ -146,7 +178,7 @@ export type WarehouseHistoryInput = {
 export type WarehouseHistoryType = {
   __typename?: 'WarehouseHistoryType';
   /** The imported/exported amount */
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Array<Maybe<Amount>>>;
   /** The export date */
   dateExport?: Maybe<Scalars['Int']>;
   /** The import date */
@@ -231,10 +263,12 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   AddWarehouseProductsInput: AddWarehouseProductsInput;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Amount: ResolverTypeWrapper<Amount>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   CreateProductInput: CreateProductInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  CreateWarehouseHistoryAmountInput: CreateWarehouseHistoryAmountInput;
   CreateWarehouseInput: CreateWarehouseInput;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Product: ResolverTypeWrapper<Product>;
   ProductInput: ProductInput;
@@ -248,10 +282,12 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   AddWarehouseProductsInput: AddWarehouseProductsInput;
   String: Scalars['String'];
+  Amount: Amount;
+  Int: Scalars['Int'];
   CreateProductInput: CreateProductInput;
   Boolean: Scalars['Boolean'];
+  CreateWarehouseHistoryAmountInput: CreateWarehouseHistoryAmountInput;
   CreateWarehouseInput: CreateWarehouseInput;
-  Int: Scalars['Int'];
   Mutation: {};
   Product: Product;
   ProductInput: ProductInput;
@@ -261,10 +297,20 @@ export type ResolversParentTypes = ResolversObject<{
   WarehouseHistoryType: WarehouseHistoryType;
 }>;
 
+export type AmountResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Amount'] = ResolversParentTypes['Amount']> = ResolversObject<{
+  amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  productId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  warehouseHistory?: Resolver<Maybe<ResolversTypes['WarehouseHistoryType']>, ParentType, ContextType>;
+  warehouseHistoryId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addWarehouseProducts?: Resolver<Maybe<ResolversTypes['Warehouse']>, ParentType, ContextType, Partial<MutationAddWarehouseProductsArgs>>;
   createProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, Partial<MutationCreateProductArgs>>;
   createWarehouse?: Resolver<Maybe<ResolversTypes['Warehouse']>, ParentType, ContextType, Partial<MutationCreateWarehouseArgs>>;
+  createWarehouseHistoryAmount?: Resolver<Maybe<ResolversTypes['Warehouse']>, ParentType, ContextType, Partial<MutationCreateWarehouseHistoryAmountArgs>>;
 }>;
 
 export type ProductResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = ResolversObject<{
@@ -295,7 +341,7 @@ export type WarehouseResolvers<ContextType = IPrismaContext, ParentType extends 
 }>;
 
 export type WarehouseHistoryTypeResolvers<ContextType = IPrismaContext, ParentType extends ResolversParentTypes['WarehouseHistoryType'] = ResolversParentTypes['WarehouseHistoryType']> = ResolversObject<{
-  amount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  amount?: Resolver<Maybe<Array<Maybe<ResolversTypes['Amount']>>>, ParentType, ContextType>;
   dateExport?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   dateImport?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -305,6 +351,7 @@ export type WarehouseHistoryTypeResolvers<ContextType = IPrismaContext, ParentTy
 }>;
 
 export type Resolvers<ContextType = IPrismaContext> = ResolversObject<{
+  Amount?: AmountResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

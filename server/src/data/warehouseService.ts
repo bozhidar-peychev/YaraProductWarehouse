@@ -1,6 +1,7 @@
-import { Warehouse } from '@prisma/client';
+import { Amount, Warehouse } from '@prisma/client';
 
 import prismaContext from '../lib/prisma/prismaContext';
+import { createWarehouseHistoryAmount } from './WarehouseHistoryService';
 import { getProductByProductId } from './productService';
 
 export const getAllWarehouses = async (): Promise<Warehouse[]> => {
@@ -10,7 +11,12 @@ export const getAllWarehouses = async (): Promise<Warehouse[]> => {
       maxStockLevel: true,
       currentStockLevel: true,
       hazardous: true,
-      products: true,
+      products: {
+        select: {
+          productId: true,
+          productName: true
+        }
+      },
       warehouseHistory: true 
     }
   });
@@ -43,13 +49,15 @@ export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> =
   
   const fullProducts = (await Promise.all(products.map(async (product) => ({...(await getProductByProductId(product.productId)), amount: product.amount}) ?? product)))?.filter(product => product.hazardous === warehouse?.hazardous)
 
-  const currentStockLevel = fullProducts.map((product) => {
+  const indvProducts = fullProducts.map((product) => {
         const amount = products?.find(p => p.productId === product.productId)?.amount
         
         if (amount) return {...product, amount}
 
-      })?.reduce((prevProduct, currentProduct) => prevProduct + (currentProduct?.amount ?? 0), 0)
+      })
 
+  const currentStockLevel = indvProducts?.reduce((prevProduct, currentProduct) => prevProduct + (currentProduct?.amount ?? 0), 0)
+  
   if (!warehouse?.maxStockLevel || warehouse?.maxStockLevel <= currentStockLevel) return warehouse!
 
   const connect = fullProducts?.map(({ productId }) => ({ productId }))
@@ -77,26 +85,54 @@ export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> =
   
   if (foundWarehouses.length > 0) {
     await foundWarehouses.forEach(async (foundWarehouse) => {
-      const decrement = foundWarehouse?.products?.map((product) => {
-        const amount = products?.find(p => p.productId === product.productId)?.amount
-        
-        if (amount) return {...product, amount}
+      const individualAmounts: Amount[] = []
+      await foundWarehouse?.products?.forEach(async (product) => {
+        const amountArray =  await prismaContext.prisma.amount.findMany({
+          where: {
+            productId: product.productId,
+            WarehouseHistory: {
+              warehouseId: foundWarehouse.id
+            }
+          }
+        })
 
-      })?.reduce((prevProduct, currentProduct) => prevProduct + (currentProduct?.amount ?? 0), 0)
-      
+        await  amountArray.forEach(el => individualAmounts.push(el))
+      })
+     
+      await prismaContext.prisma.warehouse.update({
+        where: { id: foundWarehouse.id },
+        data: {
+          warehouseHistory: {
+            create: {
+              dateExport: Math.floor(Date.now() / 1000),
+            }
+          }
+        },
+      })
+
+      const currentWarehouseHistory =  await prismaContext.prisma.warehouseHistory.findFirst({
+        orderBy: {
+          dateExport: 'asc',
+        },
+      })
+
       await prismaContext.prisma.warehouse.update({
         where: { id: foundWarehouse.id },
         data: {
           currentStockLevel: {
-            decrement
+            decrement: individualAmounts?.reduce((prevAmount, currentAmount) => prevAmount + (currentAmount?.amount ?? 0), 0)
           },
           warehouseHistory: {
-            create: {
-              dateExport: Math.floor(Date.now() / 1000),
-              amount: decrement
+            update: {
+              where: { id: currentWarehouseHistory?.id },
+              data: {
+                amount: {
+                  connect: individualAmounts.map(({id}) => ({id}))
+                }
+              },
             }
           }
-        },
+        }
       })
     })
   }
@@ -104,19 +140,49 @@ export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> =
   await prismaContext.prisma.warehouse.update({
     where: { id },
     data: {
-      currentStockLevel: {
-        increment: currentStockLevel
-      },
       products: {
         connect, 
       },
       warehouseHistory: {
         create: {
           dateImport: Math.floor(Date.now() / 1000),
-          amount: currentStockLevel
         }
       }
     },
+  })
+
+  const currentWarehouseHistory = await prismaContext.prisma.warehouseHistory.findFirst({
+    where: {
+      warehouseId: id
+    },
+    orderBy: {
+      dateImport: 'asc',
+    },
+  })
+
+  const amountIdArray: Amount[] = []
+  await indvProducts?.forEach(async (ip) => {
+    const amount = await createWarehouseHistoryAmount({ warehouseHistoryId: currentWarehouseHistory?.id, amount: ip?.amount, productId: ip?.productId })
+    amountIdArray.push(amount!)
+  })
+console.log({indvProducts,currentWarehouseHistory, currentStockLevel, id,amountIdArray });
+  await prismaContext.prisma.warehouse.update({
+    where: { id },
+    data: {
+      currentStockLevel: {
+        increment: currentStockLevel
+      },
+      warehouseHistory: {
+        update: {
+          where: { id: currentWarehouseHistory?.id },
+          data: {
+            amount: {
+              connect: amountIdArray.map(({id}) => ({id}))
+            }
+          },
+        }
+      }
+    }
   })
 
   return (await getWarehouseById(id))!;

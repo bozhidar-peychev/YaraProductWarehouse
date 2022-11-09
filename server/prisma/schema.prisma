@@ -34,5 +34,14 @@ model WarehouseHistory {
   warehouse   Warehouse? @relation("Warehouse history", fields: [warehouseId], references: [id])
   dateImport  Int?
   dateExport  Int?
-  amount      Int?
+  amountId    Int?
+  amount      Amount[]
+}
+
+model Amount {
+  id                 String            @id @default(uuid())
+  productId          String?
+  amount             Int?
+  WarehouseHistory   WarehouseHistory? @relation(fields: [warehouseHistoryId], references: [id])
+  warehouseHistoryId String?
 }

@@ -55,7 +55,8 @@ const ProductsAutocomplete: FC<{
       ?.filter(
         p =>
           p?.hazardous === hazardous &&
-          !warehouseProducts.find((wp: any) => wp.productId === p?.productId)
+          !warehouseProducts.find((wp: any) => wp.productId === p?.productId) &&
+          !products.find((wp: any) => wp.productId === p?.productId)
       )
       .map(product => ({
         productName: product?.productName,
@@ -63,7 +64,7 @@ const ProductsAutocomplete: FC<{
       }));
 
     transformedData && setOptions(transformedData);
-  }, [data, hazardous, warehouseProducts]);
+  }, [data, hazardous, warehouseProducts, products]);
 
   return (
     <Grid container justifyContent="space-around" direction="row" spacing={1}>
@@ -74,6 +75,7 @@ const ProductsAutocomplete: FC<{
           getOptionLabel={option => option.productName!}
           fullWidth
           value={value}
+          disabled={options.length === 0}
           onChange={(_event, value) => setValue(value!)}
           renderInput={params => (
             <TextField
@@ -95,6 +97,7 @@ const ProductsAutocomplete: FC<{
           label="Product Amount"
           value={amountValue}
           fullWidth
+          disabled={options.length === 0}
           InputProps={{ inputProps: { min: 0 } }}
           type="number"
           variant="outlined"
@@ -130,7 +133,10 @@ const ProductsAutocomplete: FC<{
           }}
           variant="contained"
           color="primary"
-          disabled={!!products.find(p => value?.productId === p?.productId)}
+          disabled={
+            !!products.find(p => value?.productId === p?.productId) ||
+            options.length === 0
+          }
         >
           Add Product
         </Button>

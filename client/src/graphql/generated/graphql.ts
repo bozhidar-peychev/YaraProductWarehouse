@@ -23,12 +23,37 @@ export type AddWarehouseProductsInput = {
   products: Array<InputMaybe<ProductInput>>;
 };
 
+/** An amount */
+export type Amount = {
+  __typename?: 'Amount';
+  /** the amount */
+  amount?: Maybe<Scalars['Int']>;
+  /** id of the amount */
+  id: Scalars['String'];
+  /** The product id */
+  productId?: Maybe<Scalars['String']>;
+  /** the warehouse history of the amount */
+  warehouseHistory?: Maybe<WarehouseHistoryType>;
+  /** the id of the warehouse history for the amount */
+  warehouseHistoryId?: Maybe<Scalars['String']>;
+};
+
 /** Create product input */
 export type CreateProductInput = {
   /** The products hazardous status */
   hazardous: Scalars['Boolean'];
   /** The product Name */
   productName: Scalars['String'];
+};
+
+/** Add Warehouse Products Input */
+export type CreateWarehouseHistoryAmountInput = {
+  /** productId */
+  amount: Scalars['Int'];
+  /** productId */
+  productId: Scalars['String'];
+  /** warehouseHistoryId */
+  warehouseHistoryId: Scalars['String'];
 };
 
 /** Create warehouse input */
@@ -49,6 +74,8 @@ export type Mutation = {
   createProduct?: Maybe<Product>;
   /** Create warehouse */
   createWarehouse?: Maybe<Warehouse>;
+  /** create warehouse history amount */
+  createWarehouseHistoryAmount?: Maybe<Warehouse>;
 };
 
 
@@ -64,6 +91,11 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateWarehouseArgs = {
   input?: InputMaybe<CreateWarehouseInput>;
+};
+
+
+export type MutationCreateWarehouseHistoryAmountArgs = {
+  input?: InputMaybe<CreateWarehouseHistoryAmountInput>;
 };
 
 /** A product */
@@ -146,7 +178,7 @@ export type WarehouseHistoryInput = {
 export type WarehouseHistoryType = {
   __typename?: 'WarehouseHistoryType';
   /** The imported/exported amount */
-  amount?: Maybe<Scalars['Int']>;
+  amount?: Maybe<Array<Maybe<Amount>>>;
   /** The export date */
   dateExport?: Maybe<Scalars['Int']>;
   /** The import date */
@@ -188,21 +220,21 @@ export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typenam
 export type WarehousesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WarehousesQuery = { __typename?: 'Query', warehouses?: Array<{ __typename?: 'Warehouse', id: string, maxStockLevel?: number | null, currentStockLevel?: number | null, hazardous?: boolean | null, products?: Array<{ __typename?: 'Product', productId: string, productName?: string | null, warehouseId?: string | null, hazardous?: boolean | null, amount?: number | null } | null> | null, warehouseHistory?: Array<{ __typename?: 'WarehouseHistoryType', id: string } | null> | null } | null> | null };
+export type WarehousesQuery = { __typename?: 'Query', warehouses?: Array<{ __typename?: 'Warehouse', id: string, maxStockLevel?: number | null, currentStockLevel?: number | null, hazardous?: boolean | null, products?: Array<{ __typename?: 'Product', productId: string, productName?: string | null } | null> | null, warehouseHistory?: Array<{ __typename?: 'WarehouseHistoryType', id: string, amount?: Array<{ __typename?: 'Amount', id: string, productId?: string | null, warehouseHistoryId?: string | null, amount?: number | null } | null> | null } | null> | null } | null> | null };
 
 export type WarehouseHistoryImportedQueryVariables = Exact<{
   input?: InputMaybe<WarehouseHistoryInput>;
 }>;
 
 
-export type WarehouseHistoryImportedQuery = { __typename?: 'Query', warehouseHistoryImported?: Array<{ __typename?: 'WarehouseHistoryType', id: string, warehouseId?: string | null, dateImport?: number | null, dateExport?: number | null, amount?: number | null } | null> | null };
+export type WarehouseHistoryImportedQuery = { __typename?: 'Query', warehouseHistoryImported?: Array<{ __typename?: 'WarehouseHistoryType', id: string, warehouseId?: string | null, dateImport?: number | null, amount?: Array<{ __typename?: 'Amount', id: string, productId?: string | null, warehouseHistoryId?: string | null, amount?: number | null } | null> | null } | null> | null };
 
 export type WarehouseHistoryExportedQueryVariables = Exact<{
   input?: InputMaybe<WarehouseHistoryInput>;
 }>;
 
 
-export type WarehouseHistoryExportedQuery = { __typename?: 'Query', warehouseHistoryExported?: Array<{ __typename?: 'WarehouseHistoryType', id: string, warehouseId?: string | null, dateImport?: number | null, dateExport?: number | null, amount?: number | null } | null> | null };
+export type WarehouseHistoryExportedQuery = { __typename?: 'Query', warehouseHistoryExported?: Array<{ __typename?: 'WarehouseHistoryType', id: string, warehouseId?: string | null, dateExport?: number | null, amount?: Array<{ __typename?: 'Amount', id: string, productId?: string | null, warehouseHistoryId?: string | null, amount?: number | null } | null> | null } | null> | null };
 
 
 export const CreateProductDocument = gql`
@@ -362,12 +394,15 @@ export const WarehousesDocument = gql`
     products {
       productId
       productName
-      warehouseId
-      hazardous
-      amount
     }
     warehouseHistory {
       id
+      amount {
+        id
+        productId
+        warehouseHistoryId
+        amount
+      }
     }
   }
 }
@@ -405,8 +440,12 @@ export const WarehouseHistoryImportedDocument = gql`
     id
     warehouseId
     dateImport
-    dateExport
-    amount
+    amount {
+      id
+      productId
+      warehouseHistoryId
+      amount
+    }
   }
 }
     `;
@@ -443,9 +482,13 @@ export const WarehouseHistoryExportedDocument = gql`
   warehouseHistoryExported(input: $input) {
     id
     warehouseId
-    dateImport
     dateExport
-    amount
+    amount {
+      id
+      productId
+      warehouseHistoryId
+      amount
+    }
   }
 }
     `;

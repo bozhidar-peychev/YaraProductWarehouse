@@ -3,8 +3,12 @@ query WarehouseHistoryImported($input: WarehouseHistoryInput) {
     id
     warehouseId
     dateImport
-    dateExport
-    amount
+    amount {
+      id
+      productId
+      warehouseHistoryId
+      amount
+    }
   }
 }
 
@@ -12,8 +16,12 @@ query WarehouseHistoryExported($input: WarehouseHistoryInput) {
   warehouseHistoryExported(input: $input) {
     id
     warehouseId
-    dateImport
     dateExport
-    amount
+    amount {
+      id
+      productId
+      warehouseHistoryId
+      amount
+    }
   }
 }

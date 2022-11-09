@@ -15,6 +15,7 @@ import { useWarehousesQuery } from '../graphql/generated/graphql';
 
 const Warehouses: FC = (): ReactElement | null => {
   const { data } = useWarehousesQuery({});
+  const [rowsExpanded, setRowsExpanded] = useState<number[]>([]);
   const [tableData, setTableData] = useState<
     {
       id?: string;
@@ -121,6 +122,10 @@ const Warehouses: FC = (): ReactElement | null => {
           warehouseId={rowData[0]}
         />
       );
+    },
+    rowsExpanded,
+    onRowExpansionChange(_currentRowsExpanded, allRowsExpanded) {
+      setRowsExpanded(allRowsExpanded.map(({ index }) => index));
     },
     setRowProps: row => {
       const currentPercentage = (100 * row[4]) / row[5];

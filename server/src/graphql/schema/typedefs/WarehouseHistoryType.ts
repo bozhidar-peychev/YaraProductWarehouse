@@ -1,10 +1,12 @@
 import {
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
 
+import CreateWarehouseHistoryAmountType from './CreateWarehouseHistoryAmountType';
 import WarehouseType from './WarehouseType';
 
 const WarehouseHistoryType: GraphQLObjectType = new GraphQLObjectType({
@@ -32,7 +34,7 @@ const WarehouseHistoryType: GraphQLObjectType = new GraphQLObjectType({
       description: "The export date",
       }, 
     amount: {
-      type: GraphQLInt,
+      type: new GraphQLList(CreateWarehouseHistoryAmountType),
       description: "The imported/exported amount",
     }, 
   }),

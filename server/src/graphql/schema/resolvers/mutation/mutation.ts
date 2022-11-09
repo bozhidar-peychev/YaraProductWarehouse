@@ -1,3 +1,4 @@
+import { createWarehouseHistoryAmountResolver } from './CreateWarehouseHistoryAmountMutation';
 import { addWarehouseProductsMutationResolver } from './addWarehouseProductsMutation';
 import { createProductMutationResolver } from "./createProductMutation";
 import { createWarehouseMutationResolver } from "./createWarehouseMutation";
@@ -11,6 +12,9 @@ const mutation = {
   },
   addWarehouseProducts: {
     resolve: addWarehouseProductsMutationResolver
+  },
+  createWarehouseHistoryAmount: {
+    resolve: createWarehouseHistoryAmountResolver
   }
 };
 

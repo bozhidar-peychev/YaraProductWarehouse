@@ -1,6 +1,5 @@
 import { GraphQLFieldConfig, GraphQLFieldResolver, GraphQLList } from 'graphql';
-
-import { WarehouseHistory } from '@prisma/client';
+import { WarehouseHistoryType as WarehouseHistory } from 'src/graphql/generated/graphql';
 
 import { getWarehouseHistoryImportedByWarehouseId } from '../../../../data/WarehouseHistoryService';
 import { IApolloServerContext } from '../../../../lib/interfaces/IApolloServerContext';

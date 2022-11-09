@@ -72,6 +72,24 @@ type WarehouseHistoryType {
   dateExport: Int
 
   """The imported/exported amount"""
+  amount: [Amount]
+}
+
+"""An amount"""
+type Amount {
+  """id of the amount"""
+  id: String!
+
+  """The product id"""
+  productId: String
+
+  """the warehouse history of the amount"""
+  warehouseHistory: WarehouseHistoryType
+
+  """the id of the warehouse history for the amount"""
+  warehouseHistoryId: String
+
+  """the amount"""
   amount: Int
 }
 
@@ -90,6 +108,9 @@ type Mutation {
 
   """add warehouse products"""
   addWarehouseProducts(input: AddWarehouseProductsInput): Warehouse
+
+  """create warehouse history amount"""
+  createWarehouseHistoryAmount(input: CreateWarehouseHistoryAmountInput): Warehouse
 }
 
 """Create warehouse input"""
@@ -138,4 +159,16 @@ input AddWarehouseProductsInput {
 
   """id"""
   id: String!
+}
+
+"""Add Warehouse Products Input"""
+input CreateWarehouseHistoryAmountInput {
+  """warehouseHistoryId"""
+  warehouseHistoryId: String!
+
+  """productId"""
+  productId: String!
+
+  """productId"""
+  amount: Int!
 }

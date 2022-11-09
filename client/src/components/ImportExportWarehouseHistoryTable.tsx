@@ -49,7 +49,10 @@ const ImportWarehouseHistoryTable: FC<{
     const transformedData = data?.warehouseHistoryImported?.map(
       warehouseHistoryImported => ({
         dateImport: warehouseHistoryImported?.dateImport,
-        amount: warehouseHistoryImported?.amount,
+        amount: warehouseHistoryImported?.amount?.reduce(
+          (prevValue, currentValue) => prevValue + (currentValue?.amount ?? 0),
+          0
+        ),
       })
     );
 
@@ -112,7 +115,10 @@ const ExportWarehouseHistoryTable: FC<{
     const transformedData = data?.warehouseHistoryExported?.map(
       warehouseHistoryExported => ({
         dateExport: warehouseHistoryExported?.dateExport,
-        amount: warehouseHistoryExported?.amount,
+        amount: warehouseHistoryExported?.amount?.reduce(
+          (prevValue, currentValue) => prevValue + (currentValue?.amount ?? 0),
+          0
+        ),
       })
     );
 

@@ -25,9 +25,19 @@ CREATE TABLE "WarehouseHistory" (
     "warehouseId" TEXT,
     "dateImport" INTEGER,
     "dateExport" INTEGER,
-    "amount" INTEGER,
+    "amountId" INTEGER,
 
     CONSTRAINT "WarehouseHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Amount" (
+    "id" TEXT NOT NULL,
+    "productId" TEXT,
+    "amount" INTEGER,
+    "warehouseHistoryId" TEXT,
+
+    CONSTRAINT "Amount_pkey" PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
@@ -35,3 +45,6 @@ ALTER TABLE "Product" ADD CONSTRAINT "Product_warehouseId_fkey" FOREIGN KEY ("wa
 
 -- AddForeignKey
 ALTER TABLE "WarehouseHistory" ADD CONSTRAINT "WarehouseHistory_warehouseId_fkey" FOREIGN KEY ("warehouseId") REFERENCES "Warehouse"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Amount" ADD CONSTRAINT "Amount_warehouseHistoryId_fkey" FOREIGN KEY ("warehouseHistoryId") REFERENCES "WarehouseHistory"("id") ON DELETE SET NULL ON UPDATE CASCADE;
