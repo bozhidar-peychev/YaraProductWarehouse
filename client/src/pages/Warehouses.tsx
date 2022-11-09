@@ -129,7 +129,6 @@ const Warehouses: FC = (): ReactElement | null => {
     },
     setRowProps: row => {
       const currentPercentage = (100 * row[4]) / row[5];
-      console.log({ currentPercentage });
 
       switch (true) {
         case currentPercentage > 50 && currentPercentage <= 80:
