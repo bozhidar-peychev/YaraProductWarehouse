@@ -188,7 +188,7 @@ export type ProductsQuery = { __typename?: 'Query', products?: Array<{ __typenam
 export type WarehousesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WarehousesQuery = { __typename?: 'Query', warehouses?: Array<{ __typename?: 'Warehouse', id: string, maxStockLevel?: number | null, currentStockLevel?: number | null, hazardous?: boolean | null, products?: Array<{ __typename?: 'Product', productId: string, productName?: string | null, warehouseId?: string | null, hazardous?: boolean | null, amount?: number | null } | null> | null } | null> | null };
+export type WarehousesQuery = { __typename?: 'Query', warehouses?: Array<{ __typename?: 'Warehouse', id: string, maxStockLevel?: number | null, currentStockLevel?: number | null, hazardous?: boolean | null, products?: Array<{ __typename?: 'Product', productId: string, productName?: string | null, warehouseId?: string | null, hazardous?: boolean | null, amount?: number | null } | null> | null, warehouseHistory?: Array<{ __typename?: 'WarehouseHistoryType', id: string } | null> | null } | null> | null };
 
 export type WarehouseHistoryImportedQueryVariables = Exact<{
   input?: InputMaybe<WarehouseHistoryInput>;
@@ -365,6 +365,9 @@ export const WarehousesDocument = gql`
       warehouseId
       hazardous
       amount
+    }
+    warehouseHistory {
+      id
     }
   }
 }

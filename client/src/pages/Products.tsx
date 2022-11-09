@@ -1,10 +1,67 @@
-import { FC, ReactElement } from 'react';
+import MUIDataTable, {
+  MUIDataTableColumnDef,
+  MUIDataTableProps,
+} from 'mui-datatables';
+import { FC, ReactElement, useEffect, useState } from 'react';
 
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
-import Table from '../components/Table';
+import AddProductDialogForm from '../components/AddProductDialogForm';
+import { useProductsQuery } from '../graphql/generated/graphql';
 
-const Products: FC<any> = (): ReactElement => {
+const columns: MUIDataTableColumnDef[] = [
+  {
+    name: 'productName',
+    label: 'Product Name',
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+  {
+    name: 'hazardous',
+    label: 'Hazardous',
+    options: {
+      filter: true,
+      sort: true,
+    },
+  },
+];
+
+const options: MUIDataTableProps['options'] = {
+  filter: false,
+  fixedHeader: true,
+  fixedSelectColumn: true,
+  selectableRowsHideCheckboxes: true,
+  search: true,
+  download: false,
+  print: false,
+  viewColumns: false,
+  filterType: 'dropdown',
+  responsive: 'simple',
+  tableBodyHeight: 'auto',
+  customToolbar: () => {
+    return <AddProductDialogForm />;
+  },
+};
+
+const Products: FC<any> = (): ReactElement | null => {
+  const { data } = useProductsQuery({});
+  const [tableData, setTableData] = useState<
+    {
+      productName: string | null | undefined;
+      hazardous: string;
+    }[]
+  >([]);
+  useEffect(() => {
+    const transformedData = data?.products?.map(product => ({
+      productName: product?.productName,
+      hazardous: product?.hazardous ? 'True' : 'False',
+    }));
+
+    transformedData && setTableData(transformedData);
+  }, [data]);
+
   return (
     <Box
       sx={{
@@ -16,8 +73,12 @@ const Products: FC<any> = (): ReactElement => {
         flexDirection: 'column',
       }}
     >
-      <Typography variant="h3">Products</Typography>
-      <Table />
+      <MUIDataTable
+        title={'Products'}
+        data={tableData}
+        columns={columns}
+        options={options}
+      />
     </Box>
   );
 };

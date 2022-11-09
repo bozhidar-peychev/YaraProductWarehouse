@@ -1,11 +1,19 @@
 import { Warehouse } from '@prisma/client';
 
-import { Product } from './../graphql/generated/graphql';
 import prismaContext from '../lib/prisma/prismaContext';
 import { getProductByProductId } from './productService';
 
 export const getAllWarehouses = async (): Promise<Warehouse[]> => {
-  const warehouses = await prismaContext.prisma.warehouse.findMany();
+  const warehouses = await prismaContext.prisma.warehouse.findMany({
+    select: {
+      id: true,
+      maxStockLevel: true,
+      currentStockLevel: true,
+      hazardous: true,
+      products: true,
+      warehouseHistory: true 
+    }
+  });
   return warehouses;
 };
 
@@ -33,7 +41,7 @@ export const addWarehouseProducts = async ({id, products}): Promise<Warehouse> =
 
   const warehouse: any = await getWarehouseById(id)
   
-  const fullProducts = (await Promise.all(products.map(async (product) => ({...await getProductByProductId(product.productId), amount: product.amount}) ?? product)))?.filter(product => product.hazardous === warehouse?.hazardous)
+  const fullProducts = (await Promise.all(products.map(async (product) => ({...(await getProductByProductId(product.productId)), amount: product.amount}) ?? product)))?.filter(product => product.hazardous === warehouse?.hazardous)
 
   const currentStockLevel = fullProducts.map((product) => {
         const amount = products?.find(p => p.productId === product.productId)?.amount

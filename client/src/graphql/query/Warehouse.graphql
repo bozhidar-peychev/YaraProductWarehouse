@@ -11,5 +11,8 @@ query Warehouses {
       hazardous
       amount
     }
+    warehouseHistory {
+      id
+    }
   }
 }
