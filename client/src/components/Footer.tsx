@@ -26,7 +26,7 @@ export const Footer: FC = (): ReactElement => {
               variant="subtitle1"
               align="center"
             >
-              {`${new Date().getFullYear()} | Material UI | React Router | Yup | Formik | TypeScript/JavaScript | NodeJS | ReactJS | GraphQL – Apollo server | PostgreSQL | Rest API`}
+              {`${new Date().getFullYear()} | Material UI | React Router | Yup | Formik | TypeScript | NodeJS | ReactJS | GraphQL – Apollo server/client | PostgreSQL | Rest API`}
             </Typography>
           </Grid>
         </Grid>
